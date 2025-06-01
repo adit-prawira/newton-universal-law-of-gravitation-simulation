@@ -8,18 +8,31 @@
 namespace entities{
   class CelestialBody {
     public:
-      CelestialBody& setMass(double mass);
+      CelestialBody& setMass(float mass);
       CelestialBody& setRadius(float radius);
       CelestialBody& setPosition(sf::Vector2f position);
+      CelestialBody& setVelocity(sf::Vector2f velocity);
+
       CelestialBody& build();
 
       float getRadius();
+      sf::Vector2f getVelocity();
       sf::Vector2f getPosition();
 
+      sf::Vector2f getCenter();
+
+      float getMass();
+
+      void move(CelestialBody otherCelestialBody);
+
+      static float massToRadius(float mass);
+
     private:
-      double mass;
+      float mass;
       float radius;
-      sf::Vector2f position;      
+      sf::Vector2f acceleration;
+      sf::Vector2f position; 
+      sf::Vector2f velocity;
       std::string compileValidationMessages(std::vector<std::string> validationMessages);
   };
 }

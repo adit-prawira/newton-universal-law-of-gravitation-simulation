@@ -1,5 +1,10 @@
 namespace constants {
-  static constexpr double MASS_OF_EARTH_KG = 5.972e24;
-  static constexpr double MASS_OF_MOON_KG  = 7.342e22;
-  static constexpr float TIME_STEP = 0.1f;
+  static constexpr float G = 5.0f;
+  static constexpr float PI = 3.141592653589793f;
+  static constexpr float MASS_OF_EARTH_KG =  10000.0f;
+  static constexpr float MASS_OF_MOON_KG  = 600.0f;
+
+  static constexpr float TIME_STEP = 0.05f;
+
+  static constexpr float RHO = 0.1f;
 }
