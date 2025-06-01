@@ -1,6 +1,10 @@
+#include "app.hpp"
+
+// std
 #include <iostream>
 
 int main(){
-  std::cout << "Hello World" << std::endl;
+  newton::App app("Newton Universal Law of Gravity");
+  app.run();
   return EXIT_SUCCESS;
 }
