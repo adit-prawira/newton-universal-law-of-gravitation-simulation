@@ -19,6 +19,7 @@ namespace entities{
 
   CelestialBody& CelestialBody::setPosition(sf::Vector2f position){
     this->position = position;
+    this->paths.push_back({this->getCenter()});
     return *this;
   }
   
@@ -29,6 +30,11 @@ namespace entities{
 
   CelestialBody& CelestialBody::setIsStatic(bool isStatic){
     this->isStatic = isStatic;
+    return *this;
+  }
+
+  CelestialBody& CelestialBody::setColor(sf::Color color){
+    this->color = color;
     return *this;
   }
 
@@ -51,6 +57,10 @@ namespace entities{
     return this->position + sf::Vector2f(this->getRadius(), this->getRadius());
   }
 
+  sf::Color CelestialBody::getColor(){
+    return this->color;
+  }
+  
   float CelestialBody::getRadius(){
     return this->radius;
   }
@@ -61,6 +71,16 @@ namespace entities{
     
   sf::Vector2f CelestialBody::getVelocity(){
     return this->velocity;
+  }
+
+  std::vector<sf::Vertex> CelestialBody::getPaths(){
+    return this->paths;
+  }
+
+  sf::Vertex* CelestialBody::getPathVertices(){
+    this->cachedPaths = this->getPaths();
+    sf::Vertex* vertices = this->cachedPaths.data();
+    return vertices;
   }
 
   void CelestialBody::revolve(CelestialBody otherCelestialBody){    
@@ -81,6 +101,14 @@ namespace entities{
 
   float CelestialBody::massToRadius(float mass){
     return std::pow((3*mass)/(4*constants::PI*constants::RHO), (1.0f/3.0f));
+  }
+
+  void CelestialBody::updatePath(){
+    // clean up path leaving out 1 element
+    if(this->paths.size() >= constants::MAX_PATH) 
+      this->paths.erase(this->paths.begin(), this->paths.begin() + 1);
+    this->paths.push_back({this->getCenter(), this->color});
+    this->paths.push_back({this->getCenter(), this->color});
   }
 
   //  Privates

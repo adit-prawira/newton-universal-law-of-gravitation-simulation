@@ -11,6 +11,9 @@ namespace constants {
   static constexpr float MASS_OF_URANUS_KG  = 6500.0f;
   static constexpr float MASS_OF_NEPTUNE_KG  = 5500.0f;
 
+  static constexpr int PATH_RESOLUTION = 100;
+  static constexpr int MAX_PATH = 150;
+  
   static constexpr float TIME_STEP = 0.05f;
 
   static constexpr float RHO = 0.1f;
