@@ -10,8 +10,8 @@ namespace newton{
       App(const std::string name);
 
       void run();
-      static constexpr int WINDOW_WIDTH = 1080;
-      static constexpr int WINDOW_HEIGHT = 800;
+      static constexpr int WINDOW_WIDTH = 2160;
+      static constexpr int WINDOW_HEIGHT = 1500;
       static constexpr int FRAME_LIMIT = 60;  
     private:
       sf::RenderWindow window;

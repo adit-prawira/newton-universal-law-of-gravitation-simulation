@@ -27,6 +27,11 @@ namespace entities{
     return *this;
   }
 
+  CelestialBody& CelestialBody::setIsStatic(bool isStatic){
+    this->isStatic = isStatic;
+    return *this;
+  }
+
   CelestialBody& CelestialBody::build(){
     std::vector<std::string> validationMessages;
     if(!this->mass) validationMessages.push_back("VALIDATION: Celestial body required mass!");
@@ -58,17 +63,19 @@ namespace entities{
     return this->velocity;
   }
 
-  void CelestialBody::move(CelestialBody otherCelestialBody){
+  void CelestialBody::revolve(CelestialBody otherCelestialBody){    
     sf::Vector2f delta;
     sf::Vector2f direction;
-    delta = this->getCenter() - otherCelestialBody.getCenter();
-    direction = delta.normalized();
 
+    delta = otherCelestialBody.getCenter() - this->getCenter();
+    direction = delta.normalized();
+  
+    this->acceleration = {0.0f, 0.0f};
     float distance = std::sqrt((delta.x*delta.x) + (delta.y*delta.y));
     sf::Vector2f force = (direction * constants::G * this->mass * otherCelestialBody.getMass())/(distance*distance);
-    sf::Vector2f acceleration;
-    acceleration = force/this->mass;
-    this->velocity += acceleration*constants::TIME_STEP;
+    
+    this->acceleration += force/this->mass;
+    this->velocity += this->acceleration*constants::TIME_STEP;
     this->position += this->velocity*constants::TIME_STEP;
   }
 

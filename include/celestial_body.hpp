@@ -12,7 +12,7 @@ namespace entities{
       CelestialBody& setRadius(float radius);
       CelestialBody& setPosition(sf::Vector2f position);
       CelestialBody& setVelocity(sf::Vector2f velocity);
-
+      CelestialBody& setIsStatic(bool isStatic);
       CelestialBody& build();
 
       float getRadius();
@@ -23,13 +23,13 @@ namespace entities{
 
       float getMass();
 
-      void move(CelestialBody otherCelestialBody);
-
+      void revolve(CelestialBody otherCelestialBody);
       static float massToRadius(float mass);
 
     private:
       float mass;
       float radius;
+      bool isStatic;
       sf::Vector2f acceleration;
       sf::Vector2f position; 
       sf::Vector2f velocity;
