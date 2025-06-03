@@ -10,63 +10,21 @@
 namespace newton{
   // Publics
   App::App(const std::string name): 
-  window(sf::VideoMode({App::WINDOW_WIDTH, App::WINDOW_HEIGHT}), name), font("fonts/FiraCode-Regular.ttf"){}
-  void App::run(){
-    this->window.setFramerateLimit(App::FRAME_LIMIT);
-    entities::CelestialBody sun, mercury, venus, earth, mars, jupiter;
-    
-  sun.setName("Sun")
-    .setMass(constants::MASS_OF_SUN_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_SUN_KG))
-    .setPosition({App::WINDOW_WIDTH/2 - 100, App::WINDOW_HEIGHT/2 - 100})
-    .setVelocity({0.0f, -2.0f})
-    .setIsStatic(true)
-    .setColor(sf::Color(255, 244, 232))
-    .build();
+    window(sf::VideoMode({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT}), name), 
+    font("fonts/FiraCode-Regular.ttf"){}
   
-  mercury.setName("Mercury")
-    .setMass(constants::MASS_OF_MERCURY_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_MERCURY_KG))
-    .setPosition({App::WINDOW_WIDTH/2 - 180, App::WINDOW_HEIGHT/2 - 100})
-    .setVelocity({0.0f, -90.0f})
-    .setIsStatic(false)
-    .setColor(sf::Color(139, 69, 19))
-    .build();
-
-  venus.setName("Venus")
-    .setMass(constants::MASS_OF_VENUS_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_VENUS_KG))
-    .setPosition({App::WINDOW_WIDTH/2 - 290, App::WINDOW_HEIGHT/2 - 100})
-    .setVelocity({0.0f, -67.0f})
-    .setIsStatic(false)
-    .setColor(sf::Color::Yellow)
-    .build();
-
-  earth.setName("Earth")
-    .setMass(constants::MASS_OF_EARTH_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_EARTH_KG))
-    .setPosition({sun.getCenter().x - 400, sun.getCenter().y})
-    .setVelocity({0.0f, -60.0f})
-    .setIsStatic(false)
-    .setColor(sf::Color(34, 139, 87))
-    .build();
-
-  mars.setName("Mars")
-    .setMass(constants::MASS_OF_MARS_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_MARS_KG))
-    .setPosition({sun.getCenter().x - 520, sun.getCenter().y})
-    .setVelocity({0.0f, -50.0f})
-    .setIsStatic(false)
-    .setColor(sf::Color::Red)
-    .build();
-
-  jupiter.setName("Jupiter").setMass(constants::MASS_OF_JUPITER_KG)
-    .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_JUPITER_KG))
-    .setPosition({sun.getCenter().x - 650, sun.getCenter().y})
-    .setVelocity({0.0f, -44.5f})
-    .setIsStatic(false)
-    .setColor(sf::Color(255, 153, 102))
-    .build(); 
+  void App::run(){
+    this->window.setFramerateLimit(constants::FRAME_LIMIT);
+    entities::CelestialBody sun;
+    std::vector<entities::CelestialBody> planets;
+    sun.setName("Sun")
+      .setMass(constants::MASS_OF_SUN_KG)
+      .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_SUN_KG))
+      .setPosition({constants::WINDOW_WIDTH/2 - 100, constants::WINDOW_HEIGHT/2 - 100})
+      .setVelocity({0.0f, -2.0f})
+      .setColor(sf::Color(255, 244, 232))
+      .build();
+    this->initialize(sun, planets);
 
     while(this->window.isOpen()){
       while(const std::optional event = this->window.pollEvent()){
@@ -76,53 +34,56 @@ namespace newton{
       }
       this->window.clear(sf::Color::Black);
       
-      mercury.revolve(sun);
-      mercury.updatePath();
-
-      venus.revolve(sun);
-      venus.updatePath();
+      for(size_t i = 0; i < planets.size(); i++){
+        planets[i].revolve(sun);
+        planets[i].updatePath();
+      }
       
-      earth.revolve(sun);
-      earth.updatePath();
-
-      mars.revolve(sun);
-      mars.updatePath();
-
-      jupiter.revolve(sun);
-      jupiter.updatePath();
-
-      this->drawCircle(sun.getRadius(), sun.getPosition(), sun.getColor());
-      this->drawCircle(mercury.getRadius(), mercury.getPosition(), mercury.getColor());
-      this->drawCircle(venus.getRadius(), venus.getPosition(), venus.getColor());
-      this->drawCircle(earth.getRadius(), earth.getPosition(), earth.getColor());
-      this->drawCircle(mars.getRadius(), mars.getPosition(), mars.getColor());
-      this->drawCircle(jupiter.getRadius(), jupiter.getPosition(), jupiter.getColor());
-
-      this->window.draw(mercury.getPathVertices(), mercury.getPaths().size(), sf::PrimitiveType::Lines);
-      this->window.draw(venus.getPathVertices(), venus.getPaths().size(), sf::PrimitiveType::Lines);
-      this->window.draw(earth.getPathVertices(), earth.getPaths().size(), sf::PrimitiveType::Lines);
-      this->window.draw(mars.getPathVertices(), mars.getPaths().size(), sf::PrimitiveType::Lines);
-      this->window.draw(jupiter.getPathVertices(), jupiter.getPaths().size(), sf::PrimitiveType::Lines);
-    
+      this->drawCelestialBody(sun);
       this->drawStatistics(sun, 0);
-      this->drawStatistics(mercury, 1);
-      this->drawStatistics(venus, 2);
-      this->drawStatistics(earth, 3);
-      this->drawStatistics(mars, 4);
-      this->drawStatistics(jupiter, 5);
+
+      for(size_t i = 0; i < planets.size(); i++){
+        this->drawCelestialBody(planets[i]);
+        this->drawCelestialBodyPaths(planets[i]);
+        this->drawStatistics(planets[i], i+1);
+      }
 
       this->window.display();
     }
-    
   }
 
   // Privates
-  void App::drawCircle(float radius, sf::Vector2f position, sf::Color color){
+  void App::initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies){
+    const std::vector<constants::PlanetMeta> planetMetas = {
+      {constants::MASS_OF_MERCURY_KG, "Mercury", {0.0f, -90.0f}, {solarSystem.getCenter().x - 180, solarSystem.getCenter().y}, sf::Color(139, 69, 19)},
+      {constants::MASS_OF_VENUS_KG, "Venus", {0.0f, -67.0f}, {solarSystem.getCenter().x - 290, solarSystem.getCenter().y}, sf::Color::Yellow},
+      {constants::MASS_OF_EARTH_KG, "Earth", {0.0f, -60.0f}, {solarSystem.getCenter().x - 400, solarSystem.getCenter().y}, sf::Color(34, 139, 87)},
+      {constants::MASS_OF_MARS_KG, "Mars", {0.0f, -50.0f}, {solarSystem.getCenter().x - 520, solarSystem.getCenter().y}, sf::Color::Red},
+      {constants::MASS_OF_JUPITER_KG, "Jupiter", {0.0f, -44.5f}, {solarSystem.getCenter().x - 650, solarSystem.getCenter().y}, sf::Color(255, 153, 102)}
+    };
+    for(const auto &planetMeta:planetMetas){
+      entities::CelestialBody celestialBody;
+      celestialBody.setName(planetMeta.name)
+        .setMass(planetMeta.mass)
+        .setRadius(entities::CelestialBody::massToRadius(planetMeta.mass))
+        .setPosition(planetMeta.initialPosition)
+        .setVelocity(planetMeta.initialVelocity)
+        .setColor(planetMeta.color)
+        .build();
+      celestialBodies.push_back(celestialBody);
+    };
+  }
+
+  void App::drawCelestialBody(entities::CelestialBody celestialBody){
     sf::CircleShape circle;
-    circle.setRadius(radius);
-    circle.setPosition(position);
-    circle.setFillColor(color);
+    circle.setRadius(celestialBody.getRadius());
+    circle.setPosition(celestialBody.getPosition());
+    circle.setFillColor(celestialBody.getColor());
     this->window.draw(circle);
+  }
+
+  void App::drawCelestialBodyPaths(entities::CelestialBody celestialBody){
+    this->window.draw(celestialBody.getPathVertices(), celestialBody.getPaths().size(), sf::PrimitiveType::Lines);
   }
 
   void App::drawStatistics(entities::CelestialBody celestialBody, int index){

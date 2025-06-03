@@ -13,7 +13,6 @@ namespace entities{
       CelestialBody& setPosition(sf::Vector2f position);
       CelestialBody& setVelocity(sf::Vector2f velocity);
       CelestialBody& setColor(sf::Color color);
-      CelestialBody& setIsStatic(bool isStatic);
       CelestialBody& setName(std::string name);
       CelestialBody& build();
 
@@ -36,7 +35,6 @@ namespace entities{
     private:
       float mass;
       float radius;
-      bool isStatic;
       std::string name;
       std::vector<sf::Vertex> paths;
       std::vector<sf::Vertex> cachedPaths;

@@ -29,11 +29,6 @@ namespace entities{
     return *this;
   }
 
-  CelestialBody& CelestialBody::setIsStatic(bool isStatic){
-    this->isStatic = isStatic;
-    return *this;
-  }
-
   CelestialBody& CelestialBody::setColor(sf::Color color){
     this->color = color;
     return *this;
