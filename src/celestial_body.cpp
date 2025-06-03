@@ -1,5 +1,6 @@
 #include "celestial_body.hpp"
 #include "constant.hpp"
+#include "maths.hpp"
 
 // std
 #include <sstream>
@@ -38,6 +39,11 @@ namespace entities{
     return *this;
   }
 
+  CelestialBody& CelestialBody::setName(std::string name){
+    this->name = name;
+    return *this;
+  }
+
   CelestialBody& CelestialBody::build(){
     std::vector<std::string> validationMessages;
     if(!this->mass) validationMessages.push_back("VALIDATION: Celestial body required mass!");
@@ -51,6 +57,10 @@ namespace entities{
 
   float CelestialBody::getMass(){
     return this->mass;
+  }
+
+  std::string CelestialBody::getName(){
+    return this->name;
   }
 
   sf::Vector2f CelestialBody::getCenter(){
@@ -83,6 +93,10 @@ namespace entities{
     return vertices;
   }
 
+  float CelestialBody::getAngularVelocity(){
+    return this->angularVelocity;
+  }
+
   void CelestialBody::revolve(CelestialBody otherCelestialBody){    
     sf::Vector2f delta;
     sf::Vector2f direction;
@@ -97,6 +111,8 @@ namespace entities{
     this->acceleration += force/this->mass;
     this->velocity += this->acceleration*constants::TIME_STEP;
     this->position += this->velocity*constants::TIME_STEP;
+
+    this->angularVelocity = maths::Math::cross(this->position, this->velocity)/((this->position.x * this->position.x) + (this->position.y * this->position.y));
   }
 
   float CelestialBody::massToRadius(float mass){

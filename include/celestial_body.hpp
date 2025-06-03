@@ -14,9 +14,11 @@ namespace entities{
       CelestialBody& setVelocity(sf::Vector2f velocity);
       CelestialBody& setColor(sf::Color color);
       CelestialBody& setIsStatic(bool isStatic);
+      CelestialBody& setName(std::string name);
       CelestialBody& build();
 
       float getRadius();
+      std::string getName();
       sf::Vector2f getVelocity();
       sf::Vector2f getPosition();
       sf::Color getColor();
@@ -25,8 +27,9 @@ namespace entities{
       sf::Vertex* getPathVertices();
 
       float getMass();
-
       void revolve(CelestialBody otherCelestialBody);
+      float getAngularVelocity();
+
       void updatePath();
       static float massToRadius(float mass);
 
@@ -34,12 +37,14 @@ namespace entities{
       float mass;
       float radius;
       bool isStatic;
+      std::string name;
       std::vector<sf::Vertex> paths;
       std::vector<sf::Vertex> cachedPaths;
       sf::Color color;
       sf::Vector2f acceleration;
       sf::Vector2f position; 
       sf::Vector2f velocity;
+      float angularVelocity;
       std::string compileValidationMessages(std::vector<std::string> validationMessages);
   };
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "celestial_body.hpp"
 
 // std
 #include<string>
@@ -15,8 +16,9 @@ namespace newton{
       static constexpr int FRAME_LIMIT = 60;  
     private:
       sf::RenderWindow window;
+      sf::Font font;
 
       void drawCircle(float radius, sf::Vector2f position, sf::Color color);
-
+      void drawStatistics(entities::CelestialBody celestialBody, int index);
     };
 }
