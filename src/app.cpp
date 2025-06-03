@@ -59,8 +59,12 @@ namespace newton{
       {constants::MASS_OF_VENUS_KG, "Venus", {0.0f, -67.0f}, {solarSystem.getCenter().x - 290, solarSystem.getCenter().y}, sf::Color::Yellow},
       {constants::MASS_OF_EARTH_KG, "Earth", {0.0f, -60.0f}, {solarSystem.getCenter().x - 400, solarSystem.getCenter().y}, sf::Color(34, 139, 87)},
       {constants::MASS_OF_MARS_KG, "Mars", {0.0f, -50.0f}, {solarSystem.getCenter().x - 520, solarSystem.getCenter().y}, sf::Color::Red},
-      {constants::MASS_OF_JUPITER_KG, "Jupiter", {0.0f, -44.5f}, {solarSystem.getCenter().x - 650, solarSystem.getCenter().y}, sf::Color(255, 153, 102)}
+      {constants::MASS_OF_JUPITER_KG, "Jupiter", {0.0f, -44.5f}, {solarSystem.getCenter().x - 650, solarSystem.getCenter().y}, sf::Color(255, 153, 102)},
+      {constants::MASS_OF_SATURN_KG, "Saturn", {0.0f, -40.5f}, {solarSystem.getCenter().x - 750, solarSystem.getCenter().y}, sf::Color(210, 180, 140)},
+      {constants::MASS_OF_URANUS_KG, "Uranus", {0.0f, -38.5f}, {solarSystem.getCenter().x - 850, solarSystem.getCenter().y}, sf::Color(173, 216, 230)},
+      {constants::MASS_OF_NEPTUNE_KG, "Neptune", {0.0f, -36.5f}, {solarSystem.getCenter().x - 950, solarSystem.getCenter().y}, sf::Color(28, 82, 162)}
     };
+    
     for(const auto &planetMeta:planetMetas){
       entities::CelestialBody celestialBody;
       celestialBody.setName(planetMeta.name)
