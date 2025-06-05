@@ -1,0 +1,5 @@
+namespace noise {
+  class Noise {
+    
+  };
+}
