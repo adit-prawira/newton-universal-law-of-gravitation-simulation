@@ -2,20 +2,27 @@
 #include "celestial_body.hpp"
 #include "constant.hpp"
 #include "stars_generator.hpp"
+#include <SFML/Audio.hpp>
 
 // std
 #include<array>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 namespace newton{
   // Publics
   App::App(const std::string name): 
     window(sf::VideoMode({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT}), name), 
-    font("fonts/FiraCode-Regular.ttf"){}
+    font("fonts/FiraCode-Regular.ttf")
+    {}
   
   void App::run(){
+    sf::Music music("soundtrack/soundtrack.wav"); 
+    music.setLooping(true);
+    music.play();
     this->window.setFramerateLimit(constants::FRAME_LIMIT);
+
     entities::CelestialBody sun;
     std::vector<entities::CelestialBody> planets;
     sun.setName("Sun")
@@ -23,8 +30,9 @@ namespace newton{
       .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_SUN_KG))
       .setPosition({constants::WINDOW_WIDTH/2 - 100, constants::WINDOW_HEIGHT/2 - 100})
       .setVelocity({0.0f, -2.0f})
-      .setColor(sf::Color(255, 244, 232))
+      .setColor(sf::Color(255, 215, 128))
       .build();
+    
     this->initialize(sun, planets);
 
     generators::StarsGenerator starsGenerator;    
@@ -37,14 +45,15 @@ namespace newton{
       stars.push_back(star);
     }
 
+    std::cout << "STARING: Starting solar system simulation..." << std::endl;
     while(this->window.isOpen()){
       while(const std::optional event = this->window.pollEvent()){
         if(event->is<sf::Event::Closed>()){
+          std::cout << "EXISTING: Exiting solar system simulation..." << std::endl;
           this->window.close();
         }
       }
       this->window.clear(sf::Color::Black);
-      
   
       for(const auto &star:stars){
         this->window.draw(star);
@@ -70,6 +79,7 @@ namespace newton{
 
   // Privates
   void App::initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies){
+    std::cout << "INITIALISING: Preparing solar systems..." << std::endl;
     const std::vector<constants::PlanetMeta> planetMetas = {
       {constants::MASS_OF_MERCURY_KG, "Mercury", {0.0f, -90.0f}, {solarSystem.getCenter().x - 180, solarSystem.getCenter().y}, sf::Color(139, 69, 19)},
       {constants::MASS_OF_VENUS_KG, "Venus", {0.0f, -67.0f}, {solarSystem.getCenter().x - 290, solarSystem.getCenter().y}, sf::Color::Yellow},
@@ -83,6 +93,11 @@ namespace newton{
     
     for(const auto &planetMeta:planetMetas){
       entities::CelestialBody celestialBody;
+      std::cout << "\t => Creating: " << planetMeta.name << std::endl;
+      std::cout << "\t\t -> Mass: " << planetMeta.mass << std::endl;
+      std::cout << "\t\t -> Initial Position Vector: " << "(" << planetMeta.initialPosition.x << ", " << planetMeta.initialPosition.y << ")" << std::endl;
+      std::cout << "\t\t -> Initial Velocity Vector: " << "(" << planetMeta.initialVelocity.x << ", " << planetMeta.initialVelocity.y << ")" << std::endl;
+
       celestialBody.setName(planetMeta.name)
         .setMass(planetMeta.mass)
         .setRadius(entities::CelestialBody::massToRadius(planetMeta.mass))
@@ -91,7 +106,10 @@ namespace newton{
         .setColor(planetMeta.color)
         .build();
       celestialBodies.push_back(celestialBody);
+      std::cout << "\t => Done: " << planetMeta.name << " is created successfully" << std::endl;
     };
+    std::cout << "DONE: Planets are initialised successfully" << std::endl;
+
   }
 
   void App::drawCelestialBody(entities::CelestialBody celestialBody){

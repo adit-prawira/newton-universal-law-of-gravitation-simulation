@@ -1,7 +1,7 @@
 include .env
 
 CFLAGS = -std=c++17 -Iinclude -I. -I$(SFML_PATH)/include
-LDFLAGS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 TARGET = a.out
 $(TARGET): *.cpp src/*.cpp

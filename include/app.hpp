@@ -15,7 +15,7 @@ namespace newton{
     private:
       sf::RenderWindow window;
       sf::Font font;
-
+      // sf::Music music;
       void initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies);
       void drawCelestialBody(entities::CelestialBody celestialBody);
       void drawCelestialBodyPaths(entities::CelestialBody celestialBody);
