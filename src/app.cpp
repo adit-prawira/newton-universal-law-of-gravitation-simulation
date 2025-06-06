@@ -1,6 +1,7 @@
 #include "app.hpp"
 #include "celestial_body.hpp"
 #include "constant.hpp"
+#include "stars_generator.hpp"
 
 // std
 #include<array>
@@ -26,6 +27,16 @@ namespace newton{
       .build();
     this->initialize(sun, planets);
 
+    generators::StarsGenerator starsGenerator;    
+    std::vector<sf::CircleShape> stars;
+    for(const auto &starMeta:starsGenerator.generate(constants::TOTAL_STARS)){
+      sf::CircleShape star;
+      star.setPosition(starMeta.position);
+      star.setFillColor(starMeta.color);
+      star.setRadius(starMeta.radius);
+      stars.push_back(star);
+    }
+
     while(this->window.isOpen()){
       while(const std::optional event = this->window.pollEvent()){
         if(event->is<sf::Event::Closed>()){
@@ -33,6 +44,11 @@ namespace newton{
         }
       }
       this->window.clear(sf::Color::Black);
+      
+  
+      for(const auto &star:stars){
+        this->window.draw(star);
+      }
       
       for(size_t i = 0; i < planets.size(); i++){
         planets[i].revolve(sun);
@@ -124,11 +140,13 @@ namespace newton{
 
 
     for(size_t j = 0; j < infos.size(); j++){
+      float gridPositionX = 10.0f + (275.0f*(index%constants::MAX_STATISTIC_COLUMNS));
+      float gridPositionY = (j*20.0f) + 10.0f + 100*(index/constants::MAX_STATISTIC_COLUMNS);
       sf::Text text(this->font);
       text.setString(infos[j]);
-      text.setFillColor(sf::Color::White);
-      text.setCharacterSize(12);
-      text.setPosition({10.0f + (250.0f*index), j*20.0f + 10.0f});
+      text.setFillColor(sf::Color::Cyan);
+      text.setCharacterSize(14);
+      text.setPosition({gridPositionX, gridPositionY});
       this->window.draw(text);
     }
   }

@@ -31,4 +31,7 @@ namespace constants {
   static constexpr float TIME_STEP = 0.05f;
 
   static constexpr float RHO = 0.1f;
+
+  static constexpr int TOTAL_STARS = 1000;
+  static constexpr int MAX_STATISTIC_COLUMNS = 5;
 }
