@@ -25,6 +25,8 @@ namespace newton{
 
     entities::CelestialBody sun;
     std::vector<entities::CelestialBody> planets;
+    std::unordered_map<std::string, entities::CelestialBody> planetRegistry;
+
     sun.setName("Sun")
       .setMass(constants::MASS_OF_SUN_KG)
       .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_SUN_KG))
@@ -32,8 +34,7 @@ namespace newton{
       .setVelocity({0.0f, -2.0f})
       .setColor(sf::Color(255, 215, 128))
       .build();
-    
-    this->initialize(sun, planets);
+    this->initialize(sun, planets, planetRegistry);
 
     generators::StarsGenerator starsGenerator;    
     std::vector<sf::CircleShape> stars;
@@ -44,6 +45,16 @@ namespace newton{
       star.setRadius(starMeta.radius);
       stars.push_back(star);
     }
+
+    entities::CelestialBody moon;
+    
+    moon.setName("Moon")
+      .setMass(constants::MASS_OF_MOON_KG)
+      .setRadius(entities::CelestialBody::massToRadius(constants::MASS_OF_MOON_KG))
+      .setPosition({planetRegistry["Earth"].getCenter().x- 70, planetRegistry["Earth"].getCenter().y})
+      .setVelocity({planetRegistry["Earth"].getVelocity().x, planetRegistry["Earth"].getVelocity().y+7.0f})
+      .setColor(sf::Color(128, 128, 128))
+      .build();
 
     std::cout << "STARING: Starting solar system simulation..." << std::endl;
     while(this->window.isOpen()){
@@ -58,15 +69,17 @@ namespace newton{
       for(const auto &star:stars){
         this->window.draw(star);
       }
-      
+
       for(size_t i = 0; i < planets.size(); i++){
         planets[i].revolve(sun);
         planets[i].updatePath();
+        planetRegistry[planets[i].getName()] = planets[i];
       }
       
       this->drawCelestialBody(sun);
       this->drawStatistics(sun, 0);
 
+      this->drawCelestialBody(moon);
       for(size_t i = 0; i < planets.size(); i++){
         this->drawCelestialBody(planets[i]);
         this->drawCelestialBodyPaths(planets[i]);
@@ -78,7 +91,7 @@ namespace newton{
   }
 
   // Privates
-  void App::initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies){
+  void App::initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies, std::unordered_map<std::string, entities::CelestialBody>& celestialBodyRegistry){
     std::cout << "INITIALISING: Preparing solar systems..." << std::endl;
     const std::vector<constants::PlanetMeta> planetMetas = {
       {constants::MASS_OF_MERCURY_KG, "Mercury", {0.0f, -90.0f}, {solarSystem.getCenter().x - 180, solarSystem.getCenter().y}, sf::Color(139, 69, 19)},
@@ -105,11 +118,15 @@ namespace newton{
         .setVelocity(planetMeta.initialVelocity)
         .setColor(planetMeta.color)
         .build();
-      celestialBodies.push_back(celestialBody);
+      celestialBodyRegistry[celestialBody.getName()] = celestialBody;
       std::cout << "\t => Done: " << planetMeta.name << " is created successfully" << std::endl;
     };
-    std::cout << "DONE: Planets are initialised successfully" << std::endl;
 
+    for(const auto &pair: celestialBodyRegistry){
+      celestialBodies.push_back(pair.second);
+    }
+
+    std::cout << "DONE: Planets are initialised successfully" << std::endl;
   }
 
   void App::drawCelestialBody(entities::CelestialBody celestialBody){

@@ -20,6 +20,8 @@ namespace constants {
   static constexpr float MASS_OF_MERCURY_KG  = 800.0f;
   static constexpr float MASS_OF_VENUS_KG  = 2000.0f;
   static constexpr float MASS_OF_EARTH_KG  = 5000.0f;
+  static constexpr float MASS_OF_MOON_KG  = 200.0f;
+
   static constexpr float MASS_OF_MARS_KG  = 1000.0f;
   static constexpr float MASS_OF_JUPITER_KG  = 9000.0f;
   static constexpr float MASS_OF_SATURN_KG  = 7000.0f;

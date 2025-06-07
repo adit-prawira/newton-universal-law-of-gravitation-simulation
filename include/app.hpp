@@ -4,7 +4,7 @@
 
 // std
 #include<string>
-
+#include <unordered_map>
 namespace newton{
   class App{
     public:
@@ -16,7 +16,7 @@ namespace newton{
       sf::RenderWindow window;
       sf::Font font;
       // sf::Music music;
-      void initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies);
+      void initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies, std::unordered_map<std::string, entities::CelestialBody>& celestialBodyRegistry);
       void drawCelestialBody(entities::CelestialBody celestialBody);
       void drawCelestialBodyPaths(entities::CelestialBody celestialBody);
 

@@ -97,10 +97,11 @@ namespace entities{
     sf::Vector2f direction;
 
     delta = otherCelestialBody.getCenter() - this->getCenter();
+
     direction = delta.normalized();
   
     this->acceleration = {0.0f, 0.0f};
-    float distance = std::sqrt((delta.x*delta.x) + (delta.y*delta.y));
+    float distance = std::max(std::sqrt((delta.x*delta.x) + (delta.y*delta.y)), 1e-3f);
     sf::Vector2f force = (direction * constants::G * this->mass * otherCelestialBody.getMass())/(distance*distance);
     
     this->acceleration += force/this->mass;
