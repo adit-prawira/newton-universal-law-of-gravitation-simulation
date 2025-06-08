@@ -1,0 +1,7 @@
+CompfileFlags:
+  Add: [
+    "-std=c++17",
+    "-Iinclude",
+    "-I.",
+    "-I/opt/homebrew/Cellar/sfml/3.0.1/include"
+  ]

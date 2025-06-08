@@ -70,8 +70,10 @@ namespace newton{
         this->window.draw(star);
       }
 
+      moon.revolve({planetRegistry["Earth"], sun});
+
       for(size_t i = 0; i < planets.size(); i++){
-        planets[i].revolve(sun);
+        planets[i].revolve({sun});
         planets[i].updatePath();
         planetRegistry[planets[i].getName()] = planets[i];
       }

@@ -92,19 +92,22 @@ namespace entities{
     return this->angularVelocity;
   }
 
-  void CelestialBody::revolve(CelestialBody otherCelestialBody){    
-    sf::Vector2f delta;
-    sf::Vector2f direction;
-
-    delta = otherCelestialBody.getCenter() - this->getCenter();
-
-    direction = delta.normalized();
+  void CelestialBody::revolve(std::vector<entities::CelestialBody> otherCelestialBodies){    
+    for(auto &otherCelestialBody : otherCelestialBodies){
+      sf::Vector2f delta;
+      sf::Vector2f direction;
   
-    this->acceleration = {0.0f, 0.0f};
-    float distance = std::max(std::sqrt((delta.x*delta.x) + (delta.y*delta.y)), 1e-3f);
-    sf::Vector2f force = (direction * constants::G * this->mass * otherCelestialBody.getMass())/(distance*distance);
+      delta = otherCelestialBody.getCenter() - this->getCenter();
+  
+      direction = delta.normalized();
     
-    this->acceleration += force/this->mass;
+      this->acceleration = {0.0f, 0.0f};
+      float distance = std::max(std::sqrt((delta.x*delta.x) + (delta.y*delta.y)), 1e-3f);
+      sf::Vector2f force = (direction * constants::G * this->mass * otherCelestialBody.getMass())/(distance*distance);
+      
+      this->acceleration += force/this->mass;
+    }
+
     this->velocity += this->acceleration*constants::TIME_STEP;
     this->position += this->velocity*constants::TIME_STEP;
 

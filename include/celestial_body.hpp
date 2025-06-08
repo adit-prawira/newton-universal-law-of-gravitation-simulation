@@ -26,7 +26,7 @@ namespace entities{
       sf::Vertex* getPathVertices();
 
       float getMass();
-      void revolve(CelestialBody otherCelestialBody);
+      void revolve(std::vector<entities::CelestialBody> otherCelestialBodies);
       float getAngularVelocity();
 
       void updatePath();

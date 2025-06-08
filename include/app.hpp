@@ -1,25 +1,28 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "celestial_body.hpp"
+#include <SFML/Graphics.hpp>
 
 // std
-#include<string>
+#include <string>
 #include <unordered_map>
-namespace newton{
-  class App{
-    public:
-      App(const std::string name);
+namespace newton {
+class App {
+public:
+  App(const std::string name);
 
-      void run();
+  void run();
 
-    private:
-      sf::RenderWindow window;
-      sf::Font font;
-      // sf::Music music;
-      void initialize(entities::CelestialBody solarSystem, std::vector<entities::CelestialBody>& celestialBodies, std::unordered_map<std::string, entities::CelestialBody>& celestialBodyRegistry);
-      void drawCelestialBody(entities::CelestialBody celestialBody);
-      void drawCelestialBodyPaths(entities::CelestialBody celestialBody);
+private:
+  sf::RenderWindow window;
+  sf::Font font;
+  // sf::Music music;
+  void initialize(entities::CelestialBody solarSystem,
+                  std::vector<entities::CelestialBody> &celestialBodies,
+                  std::unordered_map<std::string, entities::CelestialBody>
+                      &celestialBodyRegistry);
+  void drawCelestialBody(entities::CelestialBody celestialBody);
+  void drawCelestialBodyPaths(entities::CelestialBody celestialBody);
 
-      void drawStatistics(entities::CelestialBody celestialBody, int index);
-    };
-}
+  void drawStatistics(entities::CelestialBody celestialBody, int index);
+};
+} // namespace newton
