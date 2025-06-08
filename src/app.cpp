@@ -181,7 +181,7 @@ namespace newton{
       float gridPositionY = (j*20.0f) + 10.0f + 100*(index/constants::MAX_STATISTIC_COLUMNS);
       sf::Text text(this->font);
       text.setString(infos[j]);
-      text.setFillColor(sf::Color::Cyan);
+      text.setFillColor(sf::Color(144, 238, 144));
       text.setCharacterSize(14);
       text.setPosition({gridPositionX, gridPositionY});
       this->window.draw(text);
