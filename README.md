@@ -49,3 +49,7 @@ Note: The program is written in with Mac OS machine, thus Windows guideline is n
 ### Snapshot
 
 ![Alt Text](./assets/snapshot.png)
+
+## Demo
+
+Also using NieR Automata's OST called "Fortress of Lies" cause it sounds spacey and matched the vibe of the project
