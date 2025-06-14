@@ -52,4 +52,7 @@ Note: The program is written in with Mac OS machine, thus Windows guideline is n
 
 ## Demo
 
-Also using NieR Automata's OST called "Fortress of Lies" cause it sounds spacey and matched the vibe of the project
+Also using NieR Automata's OST called "Fortress of Lies" cause it sounds spacey and matches the vibe of the project.
+
+https://github.com/user-attachments/assets/af15f4b6-71b3-457a-8488-76b5ca7b8a05
+
